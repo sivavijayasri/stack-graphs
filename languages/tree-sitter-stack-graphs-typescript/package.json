@@ -1,0 +1,21 @@
+{
+    "name": "tree-sitter-stack-graphs-typescript",
+    "version": "0.1.0",
+    "description": "Stack graphs definition for TypeScript using tree-sitter-typescript",
+    "author": "Hendrik van Antwerpen <hendrikvanantwerpen@github.com>",
+    "license": "MIT OR Apache-2.0",
+    "keywords": [
+        "tree-sitter",
+        "stack-graphs",
+        "typescript"
+    ],
+    "devDependencies": {
+        "tree-sitter-stack-graphs": "~0.4.0",
+        "tree-sitter-typescript": "github:tree-sitter/tree-sitter-typescript#082da44a5263599186dadafd2c974c19f3a73d28"
+    },
+    "scripts": {
+        "test": "npx tree-sitter-stack-graphs test --grammar node_modules/tree-sitter-typescript --tsg src/stack-graphs --builtins src/builtins test",
+        "parse-file": "npx tree-sitter-stack-graphs parse --grammar node_modules/tree-sitter-typescript",
+        "test-file": "npx tree-sitter-stack-graphs test --grammar node_modules/tree-sitter-typescript --tsg src/stack-graphs --builtins src/builtins"
+    }
+}

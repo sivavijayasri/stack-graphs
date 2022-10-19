@@ -1,0 +1,36 @@
+name: Continuous integration for languages
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'languages/**'
+  pull_request:
+    paths:
+      - 'languages/**'
+  schedule:
+    - cron: "0 0 1,15 * *"
+
+jobs:
+  test-languages:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [16.x]
+        language: [
+          tree-sitter-stack-graphs-typescript,
+        ]
+
+    steps:
+      - name: Install Node environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+        working-directory: languages/${{ matrix.language }}
+      - name: Run tests
+        run: npm test
+        working-directory: languages/${{ matrix.language }}

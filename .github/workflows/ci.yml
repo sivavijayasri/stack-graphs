@@ -2,7 +2,11 @@ name: Continuous integration
 on:
   push:
     branches: [main]
+    paths:
+      - '!languages/**'
   pull_request:
+    paths:
+      - '!languages/**'
   schedule:
     - cron: "0 0 1,15 * *"
 

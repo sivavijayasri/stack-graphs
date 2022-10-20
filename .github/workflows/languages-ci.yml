@@ -11,26 +11,37 @@ on:
     - cron: "0 0 1,15 * *"
 
 jobs:
+  list-languages:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: languages
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: List langauges
+        id: language-list
+        run: echo "languages=$(find -mindepth 1 -maxdepth 1 -type d | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+    outputs:
+      languages: ${{ steps.language-list.outputs.languages }}
+
   test-languages:
-    runs-on: ${{ matrix.os }}
+    needs: list-languages
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        node: [16.x]
-        language: [
-          tree-sitter-stack-graphs-typescript,
-        ]
-
+        language: ${{ fromJson(needs.list-languages.outputs.languages) }}
+    defaults:
+      run:
+        working-directory: languages/${{ matrix.language }}
     steps:
       - name: Install Node environment
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 16.x
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install dependencies
         run: npm install
-        working-directory: languages/${{ matrix.language }}
       - name: Run tests
         run: npm test
-        working-directory: languages/${{ matrix.language }}

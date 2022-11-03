@@ -249,7 +249,7 @@ impl Serialize for InStackGraph<'_, (Handle<Node>, &Node)> {
         let handle = self.0 .0;
         let node = self.0 .1;
         let source_info = graph.source_info(handle);
-        let debug_info = graph.debug_info(handle);
+        let debug_info = graph.node_debug_info(handle);
 
         let mut len = 2;
         if source_info.is_some() {

@@ -676,7 +676,7 @@ impl<'a> Builder<'a> {
                 NodeType::Scope => self.load_scope(node_ref)?,
             };
             self.load_span(node_ref, handle)?;
-            self.load_debug_info(node_ref, handle)?;
+            self.load_node_debug_info(node_ref, handle)?;
         }
 
         // Then add stack graph edges for each TSG edge.  Note that we _don't_ skip(...) here because
@@ -877,7 +877,7 @@ impl<'a> Builder<'a> {
         Ok(())
     }
 
-    fn load_debug_info(
+    fn load_node_debug_info(
         &mut self,
         node_ref: GraphNodeRef,
         node_handle: Handle<Node>,
@@ -894,7 +894,7 @@ impl<'a> Builder<'a> {
                     .stack_graph
                     .add_string(&name[DEBUG_ATTR_PREFIX.len()..]);
                 let value = self.stack_graph.add_string(&value);
-                self.stack_graph.debug_info_mut(node_handle).add(key, value);
+                self.stack_graph.node_debug_info_mut(node_handle).add(key, value);
             }
         }
         Ok(())
